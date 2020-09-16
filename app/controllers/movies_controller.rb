@@ -19,7 +19,7 @@ class MoviesController < ApplicationController
     if params[:ratings]
       @chosen_ratings = params[:ratings].keys
     else
-      @chosen_ratings = all_ratings
+      @chosen_ratings = @all_ratings
     end
     
     # Check specified ratings (or all if not specified)
