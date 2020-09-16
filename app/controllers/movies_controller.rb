@@ -62,7 +62,7 @@ class MoviesController < ApplicationController
     end
     
     if sessionCall == true
-      params[:ratings] = session[:ratings]
+      params[:ratings] = session[:ratings].keys
       params[:sort_type] = session[:sort_type]
       @sort = params[:sort_type]
       flash.keep
