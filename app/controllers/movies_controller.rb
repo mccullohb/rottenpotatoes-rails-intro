@@ -68,7 +68,7 @@ class MoviesController < ApplicationController
     
     # Update sessions
     if params[:ratings] != nil
-      session[:ratings] = params[:ratings].keys
+      session[:ratings] = params[:ratings]
     end
     
     if params[:sort_type] != nil
