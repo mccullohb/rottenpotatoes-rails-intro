@@ -15,12 +15,15 @@ class MoviesController < ApplicationController
     # Pull all types of ratings to display to user
     @all_ratings = Movie.order(:rating).pluck(:rating).uniq()
     
+    sessionCall = false
+    
     # Assign movie ratings to return back to view; Either ratings specified by user or all
     # If no current ratings settings, check parameters
     if params[:ratings]
       @chosen_ratings = params[:ratings].keys
     elsif session[:ratings]
       @chosen_ratings = session[:ratings]
+      sessionCall = true
     else
       @chosen_ratings = @all_ratings
     end
@@ -40,9 +43,11 @@ class MoviesController < ApplicationController
     elsif session[:sort_type] == "title"
       @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
       @title_header = "hilite"
+      sessionCall = true
     elsif session[:sort_type] == "release_date"
       @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
       @release_date_header = "hilite"
+      sessionCall = true
     else
       @movies = Movie.where(:rating => @chosen_ratings)
     end
@@ -55,6 +60,14 @@ class MoviesController < ApplicationController
     if params[:sort_type] != nil
       session[:sort_type] = params[:sort_type]
     end
+    
+    if sessionCall == true
+      params[:ratings] = session[:ratings]
+      params[:sort_type] = session[:sort_type]
+      flash.keep
+      redirect_to movies_path(:sort_type => params[:sort], :ratings => @chosen_ratings)
+    end
+    
   end
 
   def new
