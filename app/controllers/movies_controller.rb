@@ -73,17 +73,17 @@ class MoviesController < ApplicationController
       session[:sort_type] = params[:sort_type]
     end
     
-    if ratingsSession || sortSession == true
-      if ratingSession == true
-        params[:ratings] = session[:ratings]
-      else # sortSession == true
-        params[:sort_type] = session[:sort_type]
-      end
+    # if ratingsSession || sortSession == true
+    #   if ratingSession == true
+    #     params[:ratings] = session[:ratings]
+    #   else # sortSession == true
+    #     params[:sort_type] = session[:sort_type]
+    #   end
       
-      puts params[:ratings]
-      flash.keep
-      redirect_to movies_path(:sort_type => @sort_type, :ratings => @chosen_ratings)
-    end
+    #   puts params[:ratings]
+    #   flash.keep
+    #   redirect_to movies_path(:sort_type => @sort_type, :ratings => @chosen_ratings)
+    # end
     
   end
 
