@@ -21,10 +21,12 @@ class MoviesController < ApplicationController
     # Assign movie ratings to return back to view; Either ratings specified by user or all
     # If no current ratings settings, check parameters
     if params[:ratings]
-      @pass_ratings = params[:ratings]
-      @chosen_ratings = params[:ratings].keys
+      if params[:ratings].keys != nil
+        @chosen_ratings = params[:ratings].keys
+      else
+        @chosen_ratings = params[:ratings]
+      end
     elsif session[:ratings]
-      @pass_ratings = session[:ratings]
       @chosen_ratings = session[:ratings]
       ratingsSession = true
     else
@@ -73,17 +75,17 @@ class MoviesController < ApplicationController
       session[:sort_type] = params[:sort_type]
     end
     
-    # if ratingsSession || sortSession == true
-    #   if ratingSession == true
-    #     params[:ratings] = session[:ratings]
-    #   else # sortSession == true
-    #     params[:sort_type] = session[:sort_type]
-    #   end
+    if ratingsSession || sortSession == true
+      if ratingSession == true
+        params[:ratings] = session[:ratings]
+      else # sortSession == true
+        params[:sort_type] = session[:sort_type]
+      end
       
-    #   puts params[:ratings]
-    #   flash.keep
-    #   redirect_to movies_path(:sort_type => @sort_type, :ratings => @chosen_ratings)
-    # end
+      puts params[:ratings]
+      flash.keep
+      redirect_to movies_path(:sort_type => @sort_type, :ratings => @chosen_ratings)
+    end
     
   end
 
