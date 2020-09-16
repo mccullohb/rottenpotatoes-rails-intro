@@ -21,9 +21,9 @@ class MoviesController < ApplicationController
     # Assign movie ratings to return back to view; Either ratings specified by user or all
     # If no current ratings settings, check parameters
     if params[:ratings]
-      if params[:ratings].keys != nil
+      begin
         @chosen_ratings = params[:ratings].keys
-      else
+      rescue
         @chosen_ratings = params[:ratings]
       end
     elsif session[:ratings]
