@@ -12,7 +12,7 @@ class MoviesController < ApplicationController
 
   def index
     
-    @all_ratings = Movie.order(:rating).all
+    @all_ratings = Movie.pluck(:rating)
     
     # If specified sort, return movies sorted by specified column & highlighting specified column
     if params[:sort_type] == "title"
