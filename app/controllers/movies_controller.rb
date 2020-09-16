@@ -25,7 +25,7 @@ class MoviesController < ApplicationController
       @chosen_ratings = params[:ratings].keys
     elsif session[:ratings]
       @pass_ratings = session[:ratings]
-      @chosen_ratings = session[:ratings].keys
+      @chosen_ratings = session[:ratings]
       ratingsSession = true
     else
       @chosen_ratings = @all_ratings
@@ -66,7 +66,7 @@ class MoviesController < ApplicationController
     
     # Update sessions
     if params[:ratings] != nil
-      session[:ratings] = params[:ratings]
+      session[:ratings] = params[:ratings].keys
     end
     
     if params[:sort_type] != nil
