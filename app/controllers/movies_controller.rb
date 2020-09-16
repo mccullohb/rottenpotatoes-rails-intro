@@ -76,7 +76,7 @@ class MoviesController < ApplicationController
     end
     
     if ratingsSession || sortSession == true
-      if ratingSession == true
+      if ratingsSession == true
         params[:ratings] = session[:ratings]
       else # sortSession == true
         params[:sort_type] = session[:sort_type]
