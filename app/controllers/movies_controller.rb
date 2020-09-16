@@ -18,6 +18,8 @@ class MoviesController < ApplicationController
     # Assign movie ratings to return back to view; Either ratings specified by user or all
     if params[:ratings]
       @chosen_ratings = params[:ratings].keys
+    elsif session[:ratings]
+      @chosen_ratings = session[:ratings].keys
     else
       @chosen_ratings = @all_ratings
     end
@@ -29,11 +31,13 @@ class MoviesController < ApplicationController
     
     # Return either by column sort or by ratings checked
     if params[:sort_type] == "title"
-      @movies = Movie.order(params[:sort_type])
+      @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
       @title_header = "hilite"
     elsif params[:sort_type] == "release_date"
-      @movies = Movie.order(params[:sort_type])
+      @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
       @release_date_header = "hilite"
+    elsif session[:sort_type]
+      @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
     else
       @movies = Movie.where(:rating => @chosen_ratings)
     end
