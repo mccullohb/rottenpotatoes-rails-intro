@@ -15,18 +15,19 @@ class MoviesController < ApplicationController
     # Pull all types of ratings to display to user
     @all_ratings = Movie.order(:rating).pluck(:rating).uniq()
     
-    # If user specifies specific ratings, return only those ratings (below) and check them in view
+    # Assign movie ratings to return back to view; Either ratings specified by user or all
     if params[:ratings]
       @chosen_ratings = params[:ratings].keys
     else
       @chosen_ratings = @all_ratings
     end
     
-    # Check specified ratings (or all if not specified)
+    # "Check" assigned ratings
     @chosen_ratings.each do |rating|
       params[rating] = true
     end
     
+    # Return either by column sort or by ratings checked
     if params[:sort_type] == "title"
       @movies = Movie.order(params[:sort_type])
       @title_header = "hilite"
