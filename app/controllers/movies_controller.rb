@@ -64,8 +64,9 @@ class MoviesController < ApplicationController
     if sessionCall == true
       params[:ratings] = session[:ratings]
       params[:sort_type] = session[:sort_type]
+      @sort = params[:sort_type]
       flash.keep
-      redirect_to movies_path(:sort_type => params[:sort_type], :ratings => @chosen_ratings)
+      redirect_to movies_path(:sort_type => @sort, :ratings => @chosen_ratings)
     end
     
   end
