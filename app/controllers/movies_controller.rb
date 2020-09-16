@@ -33,6 +33,13 @@ class MoviesController < ApplicationController
       params[rating] = true
     end
     
+    if params[:sort_type] != nil
+      @sort_type = params[:sort_type]
+    else
+      @sort_type = session[:sort_type]
+      sessionCall = true
+    end
+    
     # Return either by column sort or by ratings checked
     if params[:sort_type] == "title"
       @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
@@ -43,11 +50,9 @@ class MoviesController < ApplicationController
     elsif session[:sort_type] == "title"
       @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
       @title_header = "hilite"
-      sessionCall = true
     elsif session[:sort_type] == "release_date"
       @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
       @release_date_header = "hilite"
-      sessionCall = true
     else
       @movies = Movie.where(:rating => @chosen_ratings)
     end
@@ -62,10 +67,10 @@ class MoviesController < ApplicationController
     end
     
     if sessionCall == true
-      params[:ratings] = session[:ratings]
-      params[:sort_type] = session[:sort_type]
+      params[:ratings] = @chosen_ratings
+      params[:sort_type] = @sort_type
       flash.keep
-      redirect_to movies_path(:sort_type => params[:sort_type], :ratings => params[:ratings])
+      redirect_to movies_path(:sort_type => @sort_type, :ratings => @chosen_ratings)
     end
     
   end
