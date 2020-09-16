@@ -19,8 +19,6 @@ class MoviesController < ApplicationController
     # If no current ratings settings, check parameters
     if params[:ratings]
       @chosen_ratings = params[:ratings].keys
-      # Update session ratings
-      session[:ratings] = params[:ratings].keys
     elsif session[:ratings]
       @chosen_ratings = session[:ratings]
     else
@@ -39,13 +37,20 @@ class MoviesController < ApplicationController
     elsif params[:sort_type] == "release_date"
       @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
       @release_date_header = "hilite"
-    elsif session[:sort_type]
+    elsif session[:sort_type] == "title"
       @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
+      @title_header = "hilite"
+    elsif session[:sort_type] == "release_date"
+      @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
+      @release_date_header = "hilite"
     else
       @movies = Movie.where(:rating => @chosen_ratings)
     end
     
-    # Update session sort
+    # Update sessions
+    if params[:ratings] != nil
+      session[:ratings] = params[:ratings].keys
+    
     if params[:sort_type] != nil
       session[:sort_type] = params[:sort_type]
     end
