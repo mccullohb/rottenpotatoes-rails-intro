@@ -15,15 +15,16 @@ class MoviesController < ApplicationController
     # Pull all types of ratings to display to user
     @all_ratings = Movie.order(:rating).pluck(:rating).uniq()
     
-    sessionCall = false
+    ratingsSession = false
+    sortSession = false
     
     # Assign movie ratings to return back to view; Either ratings specified by user or all
     # If no current ratings settings, check parameters
     if params[:ratings]
       @chosen_ratings = params[:ratings].keys
     elsif session[:ratings]
-      @chosen_ratings = session[:ratings]
-      sessionCall = true
+      @chosen_ratings = session[:ratings].keys
+      ratingsSession = true
     else
       @chosen_ratings = @all_ratings
     end
@@ -37,7 +38,7 @@ class MoviesController < ApplicationController
       @sort_type = params[:sort_type]
     else
       @sort_type = session[:sort_type]
-      sessionCall = true
+      sortSession = true
     end
     
     # Return either by column sort or by ratings checked
@@ -59,19 +60,22 @@ class MoviesController < ApplicationController
     
     # Update sessions
     if params[:ratings] != nil
-      session[:ratings] = params[:ratings].keys
+      session[:ratings] = params[:ratings]
     end
     
     if params[:sort_type] != nil
       session[:sort_type] = params[:sort_type]
     end
     
-    # if sessionCall == true
-    #   params[:ratings] = @chosen_ratings
-    #   params[:sort_type] = @sort_type
-    #   flash.keep
-    #   redirect_to movies_path(:sort_type => @sort_type, :ratings => @chosen_ratings)
-    # end
+    if ratingsSession || sortSession == true
+      if ratingSession == true
+        params[:ratings] = session[:ratings]
+      end
+      
+      params[:sort_type] = @sort_type
+      flash.keep
+      redirect_to movies_path(:sort_type => @sort_type, :ratings => params[:ratings])
+    end
     
   end
 
