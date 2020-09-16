@@ -11,6 +11,9 @@ class MoviesController < ApplicationController
   end
 
   def index
+    
+    @all_ratings = Movie.order(:rating).all
+    
     # If specified sort, return movies sorted by specified column & highlighting specified column
     if params[:sort_type] == "title"
       @movies = Movie.order(params[:sort_type])
