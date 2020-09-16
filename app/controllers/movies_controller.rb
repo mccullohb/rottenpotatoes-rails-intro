@@ -82,7 +82,7 @@ class MoviesController < ApplicationController
       
       puts params[:ratings]
       flash.keep
-      redirect_to movies_path(:sort_type => @sort_type, :ratings => @pass_ratings)
+      redirect_to movies_path(:sort_type => @sort_type, :ratings => @chosen_ratings)
     end
     
   end
