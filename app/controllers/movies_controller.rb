@@ -62,7 +62,7 @@ class MoviesController < ApplicationController
     end
     
     if sessionCall == true
-      params[:ratings] = session[:ratings].keys
+      params[:ratings] = session[:ratings]
       params[:sort_type] = session[:sort_type]
       flash.keep
       redirect_to movies_path(params[:sort_type],params[:ratings])
