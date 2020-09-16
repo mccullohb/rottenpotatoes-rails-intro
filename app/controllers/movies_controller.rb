@@ -39,8 +39,8 @@ class MoviesController < ApplicationController
     elsif params[:sort_type] == "release_date"
       @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
       @release_date_header = "hilite"
-    # elsif session[:sort_type]
-      # @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
+    elsif session[:sort_type]
+      @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
     else
       @movies = Movie.where(:rating => @chosen_ratings)
     end
