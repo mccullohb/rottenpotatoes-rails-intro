@@ -41,9 +41,10 @@ class MoviesController < ApplicationController
       params[rating] = true
     end
     
+    # Check if using params or session
     if params[:sort_type] != nil
       @sort_type = params[:sort_type]
-    else
+    elsif session[:sort_type] != nil
       @sort_type = session[:sort_type]
       sortSession = true
     end
