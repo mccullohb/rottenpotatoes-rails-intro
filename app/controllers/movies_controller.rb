@@ -21,8 +21,10 @@ class MoviesController < ApplicationController
     # Assign movie ratings to return back to view; Either ratings specified by user or all
     # If no current ratings settings, check parameters
     if params[:ratings]
+      @pass_ratings = params[:ratings]
       @chosen_ratings = params[:ratings].keys
     elsif session[:ratings]
+      @pass_ratings = session[:ratings]
       @chosen_ratings = session[:ratings].keys
       ratingsSession = true
     else
@@ -45,15 +47,19 @@ class MoviesController < ApplicationController
     if params[:sort_type] == "title"
       @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
       @title_header = "hilite"
+      @sort_type = "title"
     elsif params[:sort_type] == "release_date"
       @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
       @release_date_header = "hilite"
+      @sort_type = "release_date"
     elsif session[:sort_type] == "title"
       @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
       @title_header = "hilite"
+      @sort_type = "title"
     elsif session[:sort_type] == "release_date"
       @movies = Movie.order(session[:sort_type]).where(:rating => @chosen_ratings)
       @release_date_header = "hilite"
+      @sort_type = "release_date"
     else
       @movies = Movie.where(:rating => @chosen_ratings)
     end
@@ -76,7 +82,7 @@ class MoviesController < ApplicationController
       
       puts params[:ratings]
       flash.keep
-      redirect_to movies_path(:sort_type => params[:sort_type], :ratings => params[:ratings])
+      redirect_to movies_path(:sort_type => @sort_type, :ratings => @pass_ratings)
     end
     
   end
