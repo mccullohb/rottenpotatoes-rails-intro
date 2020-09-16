@@ -16,6 +16,7 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.order(:rating).pluck(:rating).uniq()
     
     # Assign movie ratings to return back to view; Either ratings specified by user or all
+    # If no current ratings settings, check parameters
     if params[:ratings]
       @chosen_ratings = params[:ratings].keys
     elsif session[:ratings]
@@ -23,6 +24,9 @@ class MoviesController < ApplicationController
     else
       @chosen_ratings = @all_ratings
     end
+    
+    # Update session ratings
+    session[:ratings] = @chosen_ratings
     
     # "Check" assigned ratings
     @chosen_ratings.each do |rating|
