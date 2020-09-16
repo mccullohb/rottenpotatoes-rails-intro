@@ -21,6 +21,9 @@ class MoviesController < ApplicationController
     # Assign movie ratings to return back to view; Either ratings specified by user or all
     # If no current ratings settings, check parameters
     if params[:ratings]
+      # Note, using begin/rescue block due to session storing current params with keys already mapped
+      # It seems like I backed myself into a corner here and checking session[:ratings].keys (& saving to session with .keys) would not work for some reason
+      # The below code does work but this should not require a begin/rescue block. I would appreciate seeing the correct implementation of this
       begin
         @chosen_ratings = params[:ratings].keys
       rescue
@@ -66,7 +69,7 @@ class MoviesController < ApplicationController
       @movies = Movie.where(:rating => @chosen_ratings)
     end
     
-    # Update sessions
+    # Update sessions ----
     if params[:ratings] != nil
       session[:ratings] = params[:ratings]
     end
@@ -74,15 +77,15 @@ class MoviesController < ApplicationController
     if params[:sort_type] != nil
       session[:sort_type] = params[:sort_type]
     end
+    # --------------------
     
+    # If session was used instead of params, utilize "redirect_to" to update URI
     if ratingsSession || sortSession == true
       if ratingsSession == true
         params[:ratings] = session[:ratings]
       else # sortSession == true
         params[:sort_type] = session[:sort_type]
       end
-      
-      puts params[:ratings]
       flash.keep
       redirect_to movies_path(:sort_type => @sort_type, :ratings => @chosen_ratings)
     end
