@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-    # If specified sort, return movies sorted by specified column
+    # If specified sort, return movies sorted by specified column & highlighting specified column
     if params[:sort_type] == "title"
       @movies = Movie.order(params[:sort_type])
       @title_header = "hilite"
