@@ -4,7 +4,7 @@
 %table#movies.table.table-striped.col-md-12
   %thead
     %tr
-      %th {:class => @title_header}= link_to 'Movie Title', movies_path(:sort_type => "title"), :id => 'title_header'
+      %th{:class => @title_header}=link_to "Movie Title", movies_path(:sort_type => "title"), :id => "title_header"
       %th Rating
       %th Release Date
       %th More Info
