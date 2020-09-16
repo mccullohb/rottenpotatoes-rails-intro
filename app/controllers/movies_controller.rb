@@ -14,15 +14,22 @@ class MoviesController < ApplicationController
     
     @all_ratings = Movie.order(:rating).pluck(:rating).uniq()
     
+    if params[:ratings]
+      @chosen_ratings = params[:ratings].keys
+    else
+      @chosen_ratings = @aggregate_ratings
+    end
+    
+    
     # If specified sort, return movies sorted by specified column & highlighting specified column
     if params[:sort_type] == "title"
-      @movies = Movie.order(params[:sort_type])
+      @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
       @title_header = "hilite"
     elsif params[:sort_type] == "release_date"
-      @movies = Movie.order(params[:sort_type])
+      @movies = Movie.order(params[:sort_type]).where(:rating => @chosen_ratings)
       @release_date_header = "hilite"
     else
-      @movies = Movie.all
+      @movies = Movie.where(:rating => @chosen_ratings)
     end
   end
 
